@@ -4,7 +4,7 @@
 
 > **Turning ideas into visual experiences that connect, communicate, and leave an impression.**
 
-Welcome to the official repository for **Mikel Graphicals** — the personal portfolio and digital home of **Mikel Ndung'u**, a Graphic Designer and Visual Strategist based in **Nakuru, Kenya**.
+Welcome to the official repository for **Mikel Graphicals** — the personal portfolio and digital home of **Michael Ndung'u**, a Graphic Designer and Visual Strategist based in **Nakuru, Kenya**.
 
 The website is designed to showcase my work across **visual branding, graphic design, event creatives, marketing collateral, social media design, photo editing, and digital experiences** while providing prospective clients with a clear view of my creative process, services, pricing, and ways to get in touch.
 
