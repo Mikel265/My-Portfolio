@@ -1,0 +1,31 @@
+<svg width="200" height="200" viewBox="0 0 200 200" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <!-- Background Circle -->
+  <circle cx="100" cy="100" r="100" fill="#000000"/>
+
+  <!-- Blue Swirls/Arcs (Left Side) -->
+  <circle cx="100" cy="100" r="90" stroke="url(#paint0_linear)" stroke-width="2" stroke-opacity="0.8"/>
+  <circle cx="100" cy="100" r="85" stroke="url(#paint0_linear)" stroke-width="1.5" stroke-opacity="0.6"/>
+  <circle cx="100" cy="100" r="80" stroke="url(#paint0_linear)" stroke-width="1" stroke-opacity="0.4"/>
+  
+  <!-- Clipping mask to keep arcs only on the left/bottom-left if needed, but the image shows concentric circles mostly visible on left -->
+  <!-- Let's imply the 'swirl' effect with a gradient stroke that fades out -->
+  
+  <!-- Golden Arcs/Decoration -->
+  <path d="M60 100 Q 80 70 140 100" stroke="#C5A059" stroke-width="1.5" fill="none"/>
+
+  <!-- Text -->
+  <!-- Using system fonts to ensure legibility -->
+  <text x="100" y="105" font-family="serif" font-weight="bold" font-size="34" fill="#C5A059" text-anchor="middle" letter-spacing="2">MIKELS</text>
+  <text x="100" y="130" font-family="sans-serif" font-size="12" fill="#C5A059" text-anchor="middle" letter-spacing="1">Graphicals &amp; Designs</text>
+
+  <!-- Stars -->
+  <path d="M150 70 L152 75 L157 75 L153 79 L155 84 L150 81 L145 84 L147 79 L143 75 L148 75 Z" fill="#C5A059"/>
+  <path d="M165 85 L166 87 L169 87 L167 89 L168 91 L165 90 L162 91 L163 89 L161 87 L164 87 Z" fill="#C5A059"/>
+
+  <defs>
+    <linearGradient id="paint0_linear" x1="0" y1="100" x2="200" y2="100" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#0000FF"/>
+      <stop offset="0.5" stop-color="#0000FF" stop-opacity="0"/>
+    </linearGradient>
+  </defs>
+</svg>
