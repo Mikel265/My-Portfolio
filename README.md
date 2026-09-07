@@ -4,7 +4,7 @@ Designing ideas into visuals that connect, communicate, and leave an impression.
 
 Welcome to Mikel Graphicals, my personal creative portfolio showcasing my work in graphic design, branding, visual identity, digital creatives, and photo editing.
 
-I’m Mikel, a Graphic Designer and Visual Brand Specialist passionate about creating clean, modern, and impactful visual experiences for individuals, businesses, organizations, and brands.
+I’m Michael, a Graphic Designer and Visual Brand Specialist passionate about creating clean, modern, and impactful visual experiences for individuals, businesses, organizations, and brands.
 
 🌐 Portfolio: mikelgraphical.netlify.app
 
