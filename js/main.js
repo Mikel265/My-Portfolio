@@ -249,6 +249,10 @@ const PACKAGES = [
 // Initialize DOM
 document.addEventListener("DOMContentLoaded", () => {
   initPageTransitions();
+  initAllPageHandlers();
+});
+
+function initAllPageHandlers() {
   initTheme();
   initNavbar();
   renderPortfolioGrid("All", "");
@@ -263,7 +267,10 @@ document.addEventListener("DOMContentLoaded", () => {
   initButtonInteractions();
   initScrollReveal();
   initSmoothScroll();
-});
+  initProfileCardFlip();
+  initCostCalculator();
+  initCopyButtons();
+}
 
 // Theme Management
 function initTheme() {
@@ -508,6 +515,13 @@ function openLightbox(projectId) {
         <p>${project.details.solution}</p>
       </div>
     </div>
+
+    <div style="margin-top: 2rem; text-align: center;">
+      <a href="https://wa.me/254795168357?text=Hi%20Mikel!%20I%20saw%20your%20project%20%22${encodeURIComponent(project.title)}%22%20on%20your%20portfolio%20and%20I'd%20like%20to%20request%20a%20similar%20design." target="_blank" rel="noopener" class="btn" style="gap: 0.6rem; display: inline-flex; align-items: center; justify-content: center; background-color: #25D366; border-color: #25D366; color: #fff; font-weight: 600; padding: 0.8rem 1.6rem; border-radius: 30px; box-shadow: 0 4px 14px rgba(37, 211, 102, 0.3);">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M.057 24l1.687-6.163c-1.041-1.804-1.588-3.849-1.587-5.946.003-6.556 5.338-11.891 11.893-11.891 3.181.001 6.167 1.24 8.413 3.488 2.245 2.248 3.481 5.236 3.48 8.414-.003 6.557-5.338 11.892-11.893 11.892-1.99 0-3.951-.5-5.688-1.448l-6.305 1.654zm6.597-3.807c1.676.995 3.276 1.591 5.392 1.592 5.448 0 9.886-4.434 9.889-9.885.002-5.462-4.415-9.89-9.881-9.892-5.452 0-9.887 4.434-9.889 9.884-.001 2.225.651 3.891 1.746 5.634l-.999 3.648 3.742-.981z"/></svg>
+        Request Similar Design on WhatsApp
+      </a>
+    </div>
   `;
 
   modal.classList.add("active");
@@ -679,6 +693,10 @@ function getMikiAIResponse(query) {
     return `Mikel specializes in Logo Design, Brand Identity Systems, Posters & Flyers, Social Media Graphics, and Web & UI Design.`;
   }
 
+  if (q.includes("cv") || q.includes("resume") || q.includes("bio") || q.includes("experience")) {
+    return `You can download Mikel's official CV/Resume directly from the About page or by heading to assets/Michael_Ndungu_CV.pdf!`;
+  }
+
   if (q.includes("who") || q.includes("mikel") || q.includes("michael") || q.includes("about")) {
     return `Mikel is a visual strategist & graphic designer based in Nakuru, Kenya, specializing in creating bold brand identities and high-impact designs for businesses and organizations.`;
   }
@@ -686,13 +704,11 @@ function getMikiAIResponse(query) {
   return `Thanks for asking! I'm Miki, Mikel's virtual assistant. You can ask me about portfolio projects, pricing packages, services, or how to get in touch with Mikel at +254 795 168 357.`;
 }
 
-// Smooth Page Navigation Transitions
+// Instant SPA Page Router (Zero White Flash Navigation)
 function initPageTransitions() {
-  requestAnimationFrame(() => {
-    document.body.classList.add("page-loaded");
-  });
+  document.body.classList.add("page-loaded");
 
-  document.addEventListener("click", (e) => {
+  document.addEventListener("click", async (e) => {
     const link = e.target.closest("a");
     if (!link) return;
 
@@ -703,6 +719,7 @@ function initPageTransitions() {
       href.startsWith("#") ||
       href.startsWith("mailto:") ||
       href.startsWith("tel:") ||
+      href.endsWith(".pdf") ||
       link.target === "_blank" ||
       e.ctrlKey || e.metaKey || e.shiftKey || e.altKey
     ) {
@@ -716,80 +733,52 @@ function initPageTransitions() {
       const currentPath = window.location.pathname.split("/").pop() || "index.html";
       const targetPath = href.split("#")[0].split("/").pop() || "index.html";
 
-      if (currentPath === targetPath && href.includes("#")) {
+      if (currentPath === targetPath && !href.includes("#")) {
         return;
       }
 
       e.preventDefault();
-      document.body.classList.remove("page-loaded");
-      document.body.classList.add("page-exiting");
 
-      setTimeout(() => {
+      try {
+        const response = await fetch(href);
+        if (!response.ok) {
+          window.location.href = href;
+          return;
+        }
+
+        const htmlText = await response.text();
+        const parser = new DOMParser();
+        const doc = parser.parseFromString(htmlText, "text/html");
+
+        const newBody = doc.querySelector("body");
+        const newTitle = doc.querySelector("title");
+
+        if (newBody) {
+          document.body.innerHTML = newBody.innerHTML;
+          if (newTitle) document.title = newTitle.innerText;
+          window.history.pushState({}, "", href);
+          window.scrollTo({ top: 0, behavior: "instant" });
+
+          initAllPageHandlers();
+        } else {
+          window.location.href = href;
+        }
+      } catch (err) {
         window.location.href = href;
-      }, 250);
+      }
     }
   });
 
-  window.addEventListener("pageshow", (e) => {
-    if (e.persisted) {
-      document.body.classList.remove("page-exiting");
-      document.body.classList.add("page-loaded");
-    }
+  window.addEventListener("popstate", () => {
+    window.location.reload();
   });
 }
 
-// Scroll Reveal Animations Observer
+// Ensure Instant Visibility for All Sections
 function initScrollReveal() {
-  const targetSelectors = [
-    ".section",
-    ".hero-content",
-    ".service-card",
-    ".portfolio-card",
-    ".project-card",
-    ".testimonial-card",
-    ".pricing-card",
-    ".process-step",
-    ".faq-item",
-    ".contact-card",
-    ".about-section",
-    ".philosophy-card",
-    ".stat-card",
-    ".skill-category",
-    ".about-header",
-    ".section-header"
-  ];
-
-  targetSelectors.forEach(selector => {
-    document.querySelectorAll(selector).forEach(el => {
-      if (!el.classList.contains("reveal")) {
-        el.classList.add("reveal");
-        const parentGrid = el.closest(".services-grid, .portfolio-grid, .testimonials-grid, .pricing-grid, .philosophy-grid, .stats-grid, .process-steps");
-        if (parentGrid) {
-          const index = Array.from(parentGrid.children).indexOf(el);
-          if (index >= 0) {
-            el.classList.add(`reveal-delay-${(index % 4) + 1}`);
-          }
-        }
-      }
-    });
+  document.querySelectorAll(".section, .hero-content, .service-card, .project-card, .about-section").forEach(el => {
+    el.classList.add("is-visible");
   });
-
-  const observerOptions = {
-    root: null,
-    rootMargin: "0px 0px -40px 0px",
-    threshold: 0.08
-  };
-
-  const observer = new IntersectionObserver((entries, obs) => {
-    entries.forEach(entry => {
-      if (entry.isIntersecting) {
-        entry.target.classList.add("is-visible");
-        obs.unobserve(entry.target);
-      }
-    });
-  }, observerOptions);
-
-  document.querySelectorAll(".reveal").forEach(el => observer.observe(el));
 }
 
 // Smooth Anchor Scrolling
@@ -865,4 +854,79 @@ function initButtonInteractions() {
     });
   });
 }
+
+// 4. Interactive Profile 3D Photo Spin
+function initProfileCardFlip() {
+  const imageWrapper = document.querySelector(".about-image-wrapper");
+  if (!imageWrapper) return;
+
+  imageWrapper.addEventListener("click", () => {
+    imageWrapper.classList.toggle("spin-active");
+  });
+}
+
+// 5. Interactive Project Cost Estimator Calculator
+function initCostCalculator() {
+  const checkboxes = document.querySelectorAll(".calc-check");
+  const totalPriceEl = document.getElementById("calcTotalPrice");
+  const summaryTextEl = document.getElementById("calcSummaryText");
+  const whatsappBtn = document.getElementById("calcWhatsAppBtn");
+
+  if (!checkboxes.length || !totalPriceEl || !whatsappBtn) return;
+
+  function updateCalculation() {
+    let total = 0;
+    const selectedItems = [];
+
+    checkboxes.forEach(cb => {
+      if (cb.checked) {
+        const price = parseInt(cb.getAttribute("data-price") || "0", 10);
+        const name = cb.getAttribute("data-name") || "";
+        total += price;
+        selectedItems.push(name);
+      }
+    });
+
+    totalPriceEl.innerText = `KES ${total.toLocaleString()}`;
+
+    if (selectedItems.length === 0) {
+      summaryTextEl.innerText = "Select at least one deliverable to estimate price.";
+      whatsappBtn.style.opacity = "0.5";
+      whatsappBtn.style.pointerEvents = "none";
+      whatsappBtn.href = "#";
+    } else {
+      summaryTextEl.innerText = `Selected (${selectedItems.length}): ${selectedItems.join(", ")}`;
+      whatsappBtn.style.opacity = "1";
+      whatsappBtn.style.pointerEvents = "auto";
+
+      const messageText = `Hi Mikel! I used your website project calculator and I'd like a custom proposal for:\n- ${selectedItems.join("\n- ")}\n\nEstimated Total: KES ${total.toLocaleString()}`;
+      whatsappBtn.href = `https://wa.me/254795168357?text=${encodeURIComponent(messageText)}`;
+    }
+  }
+
+  checkboxes.forEach(cb => cb.addEventListener("change", updateCalculation));
+  updateCalculation();
+}
+
+// 6. 1-Click Copy Buttons
+function initCopyButtons() {
+  const copyBtns = document.querySelectorAll(".copy-btn");
+  copyBtns.forEach(btn => {
+    btn.addEventListener("click", () => {
+      const textToCopy = btn.getAttribute("data-copy");
+      if (!textToCopy) return;
+
+      navigator.clipboard.writeText(textToCopy).then(() => {
+        const originalHTML = btn.innerHTML;
+        btn.classList.add("copied");
+        btn.innerHTML = `<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"></polyline></svg> Copied!`;
+        setTimeout(() => {
+          btn.classList.remove("copied");
+          btn.innerHTML = originalHTML;
+        }, 2000);
+      });
+    });
+  });
+}
+
 

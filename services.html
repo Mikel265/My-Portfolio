@@ -27,7 +27,7 @@
   <!-- Navigation Bar -->
   <header class="navbar">
     <div class="container navbar-container">
-      <a href="index.html" class="logo">Mikel<span>Graphicals</span></a>
+      <a href="index.html" class="logo"><img src="images/logo.png" alt="Mikel Graphicals Logo" class="navbar-logo-img" />Mikel<span>Graphicals</span></a>
       
       <div class="nav-right-tools">
         <ul class="nav-menu" id="navMenu">
@@ -174,6 +174,76 @@
             </div>
             <a href="contact.html" class="btn btn-outline">Choose Package</a>
           </div>
+        </div>
+      </div>
+
+      <!-- Interactive Custom Project Cost Calculator -->
+      <div class="calculator-section" style="margin-top: 5rem; background-color: var(--bg-secondary); padding: 3rem 2rem; border-radius: 16px; border: 1px solid var(--border-color);">
+        <div class="portfolio-header" style="margin-bottom: 2rem; text-align: center;">
+          <h2 class="portfolio-title" style="font-size: 2.2rem;">Estimate Your Custom Project</h2>
+          <p style="color: var(--text-secondary); max-width: 600px; margin: 0.5rem auto 0;">Select the deliverables you need to calculate an instant estimated quote, then request a 1-click proposal on WhatsApp!</p>
+        </div>
+
+        <div class="calculator-grid" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 1.5rem; max-width: 900px; margin: 0 auto;">
+          <label class="calc-checkbox-card">
+            <input type="checkbox" class="calc-check" data-name="Custom Logo Design" data-price="5000" checked />
+            <div class="calc-card-content">
+              <strong>Custom Logo Design</strong>
+              <span>Unique brand mark + color palette (KES 5,000)</span>
+            </div>
+          </label>
+
+          <label class="calc-checkbox-card">
+            <input type="checkbox" class="calc-check" data-name="Social Media Graphic Pack (3 Flyers)" data-price="3500" />
+            <div class="calc-card-content">
+              <strong>Social Media Pack</strong>
+              <span>3 high-impact promotional banners (KES 3,500)</span>
+            </div>
+          </label>
+
+          <label class="calc-checkbox-card">
+            <input type="checkbox" class="calc-check" data-name="Poster & Flyer Layout (Print-ready)" data-price="3000" />
+            <div class="calc-card-content">
+              <strong>Poster / Flyer Layout</strong>
+              <span>High-res event or political flyer (KES 3,000)</span>
+            </div>
+          </label>
+
+          <label class="calc-checkbox-card">
+            <input type="checkbox" class="calc-check" data-name="Complete Brand Identity Suite" data-price="12000" />
+            <div class="calc-card-content">
+              <strong>Brand Identity Suite</strong>
+              <span>Logo, typography, guidelines & stationery (KES 12,000)</span>
+            </div>
+          </label>
+
+          <label class="calc-checkbox-card">
+            <input type="checkbox" class="calc-check" data-name="Web & Landing Page UI Design" data-price="25000" />
+            <div class="calc-card-content">
+              <strong>Web & Landing Page UI</strong>
+              <span>Responsive interactive web design (KES 25,000)</span>
+            </div>
+          </label>
+
+          <label class="calc-checkbox-card">
+            <input type="checkbox" class="calc-check" data-name="Business Card & Stationery Kit" data-price="2500" />
+            <div class="calc-card-content">
+              <strong>Business Card & Print Kit</strong>
+              <span>Double-sided business card layout (KES 2,500)</span>
+            </div>
+          </label>
+        </div>
+
+        <!-- Calculator Result Box -->
+        <div class="calc-result-box" style="margin-top: 2.5rem; text-align: center; background-color: var(--bg-primary); padding: 2rem; border-radius: 12px; border: 1px solid var(--border-color); max-width: 600px; margin: 2.5rem auto 0;">
+          <div style="font-size: 0.95rem; color: var(--text-secondary); margin-bottom: 0.3rem;">Estimated Total Price:</div>
+          <div id="calcTotalPrice" style="font-family: var(--font-serif); font-size: 2.8rem; font-weight: 700; color: var(--accent-color);">KES 5,000</div>
+          <p id="calcSummaryText" style="color: var(--text-secondary); font-size: 0.95rem; margin: 0.8rem 0 1.5rem;">Selected: Custom Logo Design</p>
+
+          <a id="calcWhatsAppBtn" href="#" target="_blank" rel="noopener" class="btn" style="gap: 0.6rem; display: inline-flex; align-items: center; justify-content: center; background-color: #25D366; border-color: #25D366; color: #fff; font-weight: 600; padding: 0.85rem 1.8rem; border-radius: 30px; box-shadow: 0 4px 14px rgba(37, 211, 102, 0.3);">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M.057 24l1.687-6.163c-1.041-1.804-1.588-3.849-1.587-5.946.003-6.556 5.338-11.891 11.893-11.891 3.181.001 6.167 1.24 8.413 3.488 2.245 2.248 3.481 5.236 3.48 8.414-.003 6.557-5.338 11.892-11.893 11.892-1.99 0-3.951-.5-5.688-1.448l-6.305 1.654zm6.597-3.807c1.676.995 3.276 1.591 5.392 1.592 5.448 0 9.886-4.434 9.889-9.885.002-5.462-4.415-9.89-9.881-9.892-5.452 0-9.887 4.434-9.889 9.884-.001 2.225.651 3.891 1.746 5.634l-.999 3.648 3.742-.981z"/></svg>
+            Send Custom Quote to WhatsApp
+          </a>
         </div>
       </div>
 

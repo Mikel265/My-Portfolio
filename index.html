@@ -23,6 +23,30 @@
 
   <link rel="icon" type="image/svg+xml" href="favicon.svg" />
   <link rel="stylesheet" href="css/style.css" />
+  <!-- Schema.org Structured Data for Google Search SEO -->
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "LocalBusiness",
+    "name": "Mikel Graphicals",
+    "image": "https://mikel-graphicals.com/images/Mikel_Profile.jpg",
+    "logo": "https://mikel-graphicals.com/images/logo.png",
+    "description": "Graphic Designer & Visual Strategist specializing in logo design, brand identity systems, posters, and marketing graphics in Nakuru, Kenya.",
+    "telephone": "+254795168357",
+    "email": "mikelndungu263@gmail.com",
+    "address": {
+      "@type": "PostalAddress",
+      "addressLocality": "Nakuru",
+      "addressCountry": "KE"
+    },
+    "sameAs": [
+      "https://www.instagram.com/mikel_ndungu",
+      "https://github.com/Mikel265",
+      "https://www.linkedin.com/in/mikel-ndungu/"
+    ],
+    "priceRange": "KES 5000 - KES 45000"
+  }
+  </script>
 </head>
 
 <body>
@@ -30,7 +54,7 @@
   <!-- Navigation Bar -->
   <header class="navbar">
     <div class="container navbar-container">
-      <a href="index.html" class="logo">Mikel<span>Graphicals</span></a>
+      <a href="index.html" class="logo"><img src="images/logo.png" alt="Mikel Graphicals Logo" class="navbar-logo-img" />Mikel<span>Graphicals</span></a>
 
       <div class="nav-right-tools">
         <ul class="nav-menu" id="navMenu">
@@ -57,10 +81,18 @@
   <!-- Hero Section -->
   <section class="hero" id="home">
     <div class="container hero-content">
+      <div class="availability-badge">
+        <span class="status-pulse-dot"></span>
+        <span>Available for New Projects • September 2026</span>
+      </div>
       <h1 class="hero-title">Crafting Visual Identities <span>That Command Attention.</span></h1>
       <p class="hero-subtitle">Logos, branding, and digital visuals that elevate your business.</p>
       <div class="hero-buttons">
         <a href="portfolio.html" class="btn btn-primary">View My Work</a>
+        <a href="assets/Michael_Ndungu_CV.pdf" target="_blank" rel="noopener" download="Michael_Ndungu_CV.pdf" class="btn btn-outline" style="gap: 0.5rem;">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path><polyline points="7 10 12 15 17 10"></polyline><line x1="12" y1="15" x2="12" y2="3"></line></svg>
+          Download CV
+        </a>
         <a href="contact.html" class="btn btn-outline">Start a Project</a>
       </div>
     </div>
@@ -167,6 +199,43 @@
 
       <div style="text-align: center; margin-top: 3rem;">
         <a href="portfolio.html" class="btn btn-primary">Explore All Works &rarr;</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- Home Page Testimonials & Client Reviews Strip -->
+  <section class="section" style="background-color: var(--bg-secondary); padding: 4rem 0;">
+    <div class="container">
+      <div class="section-header text-center" style="text-align: center; margin-bottom: 2.5rem;">
+        <h2 style="font-family: var(--font-serif); font-size: 2.2rem; margin-bottom: 0.5rem;">What Clients Say</h2>
+        <p style="color: var(--text-secondary); max-width: 600px; margin: 0 auto;">Trusted by businesses, organizations, and brand leaders across Kenya.</p>
+      </div>
+
+      <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 2rem;">
+        <div style="background-color: var(--bg-primary); padding: 2rem; border-radius: 12px; border: 1px solid var(--border-color); box-shadow: var(--shadow-sm);">
+          <div style="color: var(--accent-color); margin-bottom: 0.8rem; font-size: 1.1rem;">★★★★★</div>
+          <p style="color: var(--text-secondary); line-height: 1.6; margin-bottom: 1.5rem; font-style: italic;">"Mikel crafted our recruitment poster and brand graphics with speed and exceptional creativity. The visual impact exceeded our expectations."</p>
+          <div style="font-weight: 600; color: var(--text-primary);">Power Learn Project</div>
+          <span style="font-size: 0.85rem; color: var(--text-secondary);">Tech Scholarship Program</span>
+        </div>
+
+        <div style="background-color: var(--bg-primary); padding: 2rem; border-radius: 12px; border: 1px solid var(--border-color); box-shadow: var(--shadow-sm);">
+          <div style="color: var(--accent-color); margin-bottom: 0.8rem; font-size: 1.1rem;">★★★★★</div>
+          <p style="color: var(--text-secondary); line-height: 1.6; margin-bottom: 1.5rem; font-style: italic;">"The black and silver classic aesthetic created for Otunge's Hub gave our brand a premium, high-end look that our salon clients love."</p>
+          <div style="font-weight: 600; color: var(--text-primary);">Otunge's Hub</div>
+          <span style="font-size: 0.85rem; color: var(--text-secondary);">Grooming & Beauty Center</span>
+        </div>
+
+        <div style="background-color: var(--bg-primary); padding: 2rem; border-radius: 12px; border: 1px solid var(--border-color); box-shadow: var(--shadow-sm);">
+          <div style="color: var(--accent-color); margin-bottom: 0.8rem; font-size: 1.1rem;">★★★★★</div>
+          <p style="color: var(--text-secondary); line-height: 1.6; margin-bottom: 1.5rem; font-style: italic;">"Uncle Sam NET fiber advertising flyers generated instant calls and subscription packages across Nakuru. Highly recommended!"</p>
+          <div style="font-weight: 600; color: var(--text-primary);">Uncle Sam NET</div>
+          <span style="font-size: 0.85rem; color: var(--text-secondary);">Fiber Internet Provider</span>
+        </div>
+      </div>
+
+      <div style="text-align: center; margin-top: 2.5rem;">
+        <a href="testimonials.html" class="btn btn-outline">Read All Client Reviews &rarr;</a>
       </div>
     </div>
   </section>
