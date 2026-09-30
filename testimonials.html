@@ -48,19 +48,23 @@
   <!-- Testimonials Section -->
   <section class="testimonials-section" style="padding-top: 120px; border-top: none;">
     <div class="container">
-      <div class="section-header">
-        <h1 class="section-title">Client Testimonials</h1>
-        <p class="section-subtitle">What clients and partners say about working with Mikel Graphicals.</p>
+      <div class="section-header" style="display: flex; justify-content: space-between; align-items: flex-end; flex-wrap: wrap; gap: 1rem; margin-bottom: 3rem;">
+        <div>
+          <h1 class="section-title">Client Testimonials</h1>
+          <p class="section-subtitle" style="margin-bottom: 0;">What clients and partners say about working with Mikel Graphicals.</p>
+        </div>
+        <button class="btn btn-primary" id="openReviewModalBtn" style="gap: 0.5rem;">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 5v14M5 12h14"/></svg>
+          Leave a Review
+        </button>
       </div>
 
-      <div class="testimonials-grid">
+      <div class="testimonials-grid" id="testimonialsGrid">
         <div class="testimonial-card">
           <div class="quote-icon">“</div>
           <p class="testimonial-content">Mikel transformed our brand identity completely. The logo design was exactly what we envisioned—modern, bold, and uniquely Kenyan.</p>
           <div class="testimonial-author">
-            <div class="author-image">
-              <img src="https://images.unsplash.com/photo-1531123897727-8f129e1688ce?auto=format&fit=crop&w=300&q=80" alt="Wanjiku Kimani" />
-            </div>
+            <div class="author-avatar-badge" style="background: linear-gradient(135deg, #1abcfe, #a259ff);">WK</div>
             <div class="author-info">
               <h4>Wanjiku Kimani</h4>
               <span>Marketing Director, Nairobi Tech Hub</span>
@@ -72,9 +76,7 @@
           <div class="quote-icon">“</div>
           <p class="testimonial-content">The website design is sleek, modern, and very user-friendly. Highly recommend Mikel Graphicals for any premium project that needs a touch of class.</p>
           <div class="testimonial-author">
-            <div class="author-image">
-              <img src="https://images.unsplash.com/photo-1506277886164-e25aa3f4ef7f?auto=format&fit=crop&w=300&q=80" alt="Brian Omondi" />
-            </div>
+            <div class="author-avatar-badge" style="background: linear-gradient(135deg, #C5A059, #D4AF37);">BO</div>
             <div class="author-info">
               <h4>Brian Omondi</h4>
               <span>CEO, Omondi Estates</span>
@@ -86,9 +88,7 @@
           <div class="quote-icon">“</div>
           <p class="testimonial-content">Professional, creative, and timely delivery. Mikel captured the essence of our beauty brand perfectly. The packaging designs are flying off the shelves!</p>
           <div class="testimonial-author">
-            <div class="author-image">
-              <img src="https://images.unsplash.com/photo-1589156280159-27698a70f29e?auto=format&fit=crop&w=300&q=80" alt="Aminah Hassan" />
-            </div>
+            <div class="author-avatar-badge" style="background: linear-gradient(135deg, #ff3366, #ff9a00);">AH</div>
             <div class="author-info">
               <h4>Aminah Hassan</h4>
               <span>Founder, Savannah Beauty</span>
@@ -100,9 +100,7 @@
           <div class="quote-icon">“</div>
           <p class="testimonial-content">Exceptional attention to detail. Our corporate branding now looks world-class, and our clients have definitely noticed the upgrade.</p>
           <div class="testimonial-author">
-            <div class="author-image">
-              <img src="https://images.unsplash.com/photo-1572561300743-2dd367ed0c9a?auto=format&fit=crop&w=300&q=80" alt="David Kamau" />
-            </div>
+            <div class="author-avatar-badge" style="background: linear-gradient(135deg, #2d6a4f, #1b4332);">DK</div>
             <div class="author-info">
               <h4>David Kamau</h4>
               <span>Operations Manager, Swift Logistics</span>
@@ -112,6 +110,48 @@
       </div>
     </div>
   </section>
+
+  <!-- Submit Review Modal -->
+  <div class="review-modal-overlay" id="reviewModalOverlay" role="dialog" aria-modal="true">
+    <div class="review-modal">
+      <button class="lightbox-close" id="reviewModalClose" aria-label="Close modal">&times;</button>
+      <h2 style="font-family: var(--font-serif); font-size: 1.8rem; margin-bottom: 0.3rem; color: var(--text-primary);">Submit a Client Review</h2>
+      <p style="color: var(--text-secondary); font-size: 0.9rem; margin-bottom: 1.5rem;">Share your experience working with Mikel Graphicals!</p>
+
+      <form id="reviewForm">
+        <div id="reviewStatus"></div>
+
+        <div class="form-group" style="margin-bottom: 1rem;">
+          <label for="reviewAuthorName" style="display: block; font-size: 0.88rem; font-weight: 500; margin-bottom: 0.3rem;">Your Name</label>
+          <input type="text" id="reviewAuthorName" class="form-control" placeholder="e.g. Sarah Njeri" required />
+        </div>
+
+        <div class="form-group" style="margin-bottom: 1rem;">
+          <label for="reviewAuthorOrg" style="display: block; font-size: 0.88rem; font-weight: 500; margin-bottom: 0.3rem;">Organization / Title</label>
+          <input type="text" id="reviewAuthorOrg" class="form-control" placeholder="e.g. Founder, Apex Creative" required />
+        </div>
+
+        <div class="form-group" style="margin-bottom: 1rem;">
+          <label style="display: block; font-size: 0.88rem; font-weight: 500; margin-bottom: 0.3rem;">Rating</label>
+          <div class="star-rating-select" id="starRatingSelect">
+            <span class="star active" data-rating="1">★</span>
+            <span class="star active" data-rating="2">★</span>
+            <span class="star active" data-rating="3">★</span>
+            <span class="star active" data-rating="4">★</span>
+            <span class="star active" data-rating="5">★</span>
+          </div>
+          <input type="hidden" id="reviewRatingInput" value="5" />
+        </div>
+
+        <div class="form-group" style="margin-bottom: 1.5rem;">
+          <label for="reviewText" style="display: block; font-size: 0.88rem; font-weight: 500; margin-bottom: 0.3rem;">Your Feedback / Review</label>
+          <textarea id="reviewText" class="form-control" rows="4" placeholder="Tell us about the design quality, turnaround time, and communication..." required></textarea>
+        </div>
+
+        <button type="submit" class="submit-btn" style="width: 100%;">Submit Review</button>
+      </form>
+    </div>
+  </div>
 
   <!-- Miki Floating AI Chatbot Widget -->
   <div class="miki-widget">
@@ -150,7 +190,7 @@
           <svg viewBox="0 0 24 24"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z"/></svg>
         </a>
         <a href="https://wa.me/254795168357" target="_blank" rel="noopener" class="social-btn" title="WhatsApp" aria-label="WhatsApp">
-          <svg viewBox="0 0 24 24"><path d="M.057 24l1.687-6.163c-1.041-1.804-1.588-3.849-1.587-5.946.003-6.556 5.338-11.891 11.893-11.891 3.181.001 6.167 1.24 8.413 3.488 2.245 2.248 3.481 5.236 3.48 8.414-.003 6.557-5.338 11.892-11.893 11.892-1.99 0-3.951-.5-5.688-1.448l-6.305 1.654zm6.597-3.807c1.676.995 3.276 1.591 5.392 1.592 5.448 0 9.886-4.434 9.889-9.885.002-5.462-4.415-9.89-9.881-9.892-5.452 0-9.887 4.434-9.889 9.884-.001 2.225.651 3.891 1.746 5.634l-.999 3.648 3.742-.981z"/></svg>
+          <svg viewBox="0 0 24 24"><path d="M.057 24l1.687-6.163c-1.041-1.804-1.588-3.849-1.587-5.946.003-6.556 5.338-11.891 11.893-11.893 3.181.001 6.167 1.24 8.413 3.488 2.245 2.248 3.481 5.236 3.48 8.414-.003 6.557-5.338 11.892-11.893 11.892-1.99 0-3.951-.5-5.688-1.448l-6.305 1.654zm6.597-3.807c1.676.995 3.276 1.591 5.392 1.592 5.448 0 9.886-4.434 9.889-9.885.002-5.462-4.415-9.89-9.881-9.892-5.452 0-9.887 4.434-9.889 9.884-.001 2.225.651 3.891 1.746 5.634l-.999 3.648 3.742-.981z"/></svg>
         </a>
         <a href="https://github.com/Mikel265" target="_blank" rel="noopener" class="social-btn" title="GitHub" aria-label="GitHub">
           <svg viewBox="0 0 24 24"><path d="M12 0C5.37 0 0 5.37 0 12c0 5.31 3.435 9.795 8.205 11.385.6.105.825-.255.825-.57 0-.285-.015-1.23-.015-2.235-3.015.555-3.795-.735-4.035-1.41-.135-.345-.72-1.41-1.23-1.695-.42-.225-1.02-.78-.015-.795.945-.015 1.62.87 1.845 1.23 1.08 1.815 2.805 1.305 3.495.99.105-.78.42-1.305.765-1.605-2.67-.3-5.46-1.335-5.46-5.925 0-1.305.465-2.385 1.23-3.225-.12-.3-.54-1.53.12-3.18 0 0 1.005-.315 3.3 1.23.96-.27 1.98-.405 3-.405s2.04.135 3 .405c2.295-1.56 3.3-1.23 3.3-1.23.66 1.65.24 2.88.12 3.18.765.84 1.23 1.905 1.23 3.225 0 4.605-2.805 5.625-5.475 5.925.435.375.81 1.095.81 2.22 0 1.605-.015 2.895-.015 3.3 0 .315.225.69.825.57A12.02 12.02 0 0024 12c0-6.63-5.37-12-12-12z"/></svg>
@@ -162,7 +202,7 @@
           <svg viewBox="0 0 24 24"><path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"/></svg>
         </a>
       </div>
-      <p>&copy; 2024 Mikel Graphicals. All rights reserved. Designed with precision & passion.</p>
+      <p>&copy; 2026 Mikel Graphicals. All rights reserved. Designed with precision & passion.</p>
     </div>
   </footer>
 

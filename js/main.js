@@ -258,6 +258,9 @@ function initAllPageHandlers() {
   renderPortfolioGrid("All", "");
   initCategoryFilters();
   initPortfolioSearch();
+  initPortfolioViewSwitcher();
+  initPackageSelectionHandoff();
+  initReviewModal();
   initLightboxModal();
   initContactForm();
   initFAQ();
@@ -385,6 +388,11 @@ function renderPortfolioGrid(category = "All", query = "") {
         const toolMatch = p.details.tools.some(t => t.toLowerCase().includes(currentSearchQuery));
         return titleMatch || descMatch || clientMatch || categoryMatch || toolMatch;
       });
+    }
+
+    const counterBadge = document.getElementById("projectCounterBadge");
+    if (counterBadge) {
+      counterBadge.innerHTML = `<svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="7" height="7"></rect><rect x="14" y="3" width="7" height="7"></rect><rect x="14" y="14" width="7" height="7"></rect><rect x="3" y="14" width="7" height="7"></rect></svg> Showing ${filteredProjects.length} Projects`;
     }
 
     if (filteredProjects.length === 0) {
@@ -608,6 +616,34 @@ function initMikiChatbot() {
   const mikiMessages = document.getElementById("mikiMessages");
 
   if (!mikiToggle || !mikiWindow) return;
+
+  // Add suggestion chips if not present
+  if (!mikiWindow.querySelector(".miki-chips-container")) {
+    const chipsHTML = `
+      <div class="miki-chips-container">
+        <span class="miki-chip" data-query="What packages do you offer?">💰 See Packages</span>
+        <span class="miki-chip" data-query="Show me your best design projects">🖼️ View Best Work</span>
+        <span class="miki-chip" data-query="What is your WhatsApp number?">📲 Instant WhatsApp</span>
+        <span class="miki-chip" data-query="What is your average turnaround time?">⏱️ Turnaround Time</span>
+      </div>
+    `;
+    const inputArea = mikiWindow.querySelector(".miki-input-area");
+    if (inputArea) {
+      inputArea.insertAdjacentHTML("beforebegin", chipsHTML);
+    }
+  }
+
+  mikiWindow.querySelectorAll(".miki-chip").forEach(chip => {
+    chip.addEventListener("click", () => {
+      const query = chip.getAttribute("data-query");
+      if (!query) return;
+      appendMessage(query, "user");
+      setTimeout(() => {
+        const response = getMikiAIResponse(query);
+        appendMessage(response, "ai");
+      }, 400);
+    });
+  });
 
   mikiToggle.addEventListener("click", () => {
     mikiWindow.classList.toggle("active");
@@ -928,5 +964,133 @@ function initCopyButtons() {
     });
   });
 }
+
+// 7. Portfolio Grid vs List View Switcher
+function initPortfolioViewSwitcher() {
+  const viewGridBtn = document.getElementById("viewGridBtn");
+  const viewListBtn = document.getElementById("viewListBtn");
+  const gridContainer = document.getElementById("portfolioGrid");
+
+  if (!viewGridBtn || !viewListBtn || !gridContainer) return;
+
+  viewGridBtn.addEventListener("click", () => {
+    viewGridBtn.classList.add("active");
+    viewListBtn.classList.remove("active");
+    gridContainer.classList.remove("list-view");
+  });
+
+  viewListBtn.addEventListener("click", () => {
+    viewListBtn.classList.add("active");
+    viewGridBtn.classList.remove("active");
+    gridContainer.classList.add("list-view");
+  });
+}
+
+// 8. Package Selection Handoff URL Handler
+function initPackageSelectionHandoff() {
+  const urlParams = new URLSearchParams(window.location.search);
+  const selectedPackage = urlParams.get("package");
+  const subjectInput = document.getElementById("subject");
+  const contactForm = document.getElementById("contactForm");
+
+  if (selectedPackage && subjectInput) {
+    subjectInput.value = `Inquiry: ${selectedPackage}`;
+    
+    if (contactForm && !document.querySelector(".selected-package-banner")) {
+      const bannerHTML = `
+        <div class="selected-package-banner">
+          <div>Selected Package: <span>${selectedPackage}</span></div>
+          <a href="services.html" style="font-size: 0.8rem; text-decoration: underline; color: var(--text-secondary);">Change Package</a>
+        </div>
+      `;
+      contactForm.insertAdjacentHTML("beforebegin", bannerHTML);
+    }
+    
+    subjectInput.focus();
+  }
+}
+
+// 9. Client Review Submission Modal Handler
+function initReviewModal() {
+  const openBtn = document.getElementById("openReviewModalBtn");
+  const overlay = document.getElementById("reviewModalOverlay");
+  const closeBtn = document.getElementById("reviewModalClose");
+  const reviewForm = document.getElementById("reviewForm");
+  const starRatingSelect = document.getElementById("starRatingSelect");
+  const ratingInput = document.getElementById("reviewRatingInput");
+  const statusContainer = document.getElementById("reviewStatus");
+  const testimonialsGrid = document.getElementById("testimonialsGrid");
+
+  if (!overlay) return;
+
+  openBtn?.addEventListener("click", () => {
+    overlay.classList.add("active");
+  });
+
+  closeBtn?.addEventListener("click", () => {
+    overlay.classList.remove("active");
+  });
+
+  overlay.addEventListener("click", (e) => {
+    if (e.target === overlay) overlay.classList.remove("active");
+  });
+
+  if (starRatingSelect) {
+    const stars = starRatingSelect.querySelectorAll(".star");
+    stars.forEach(star => {
+      star.addEventListener("click", () => {
+        const rating = parseInt(star.getAttribute("data-rating"));
+        if (ratingInput) ratingInput.value = rating;
+        stars.forEach(s => {
+          const r = parseInt(s.getAttribute("data-rating"));
+          if (r <= rating) s.classList.add("active");
+          else s.classList.remove("active");
+        });
+      });
+    });
+  }
+
+  if (reviewForm) {
+    reviewForm.addEventListener("submit", (e) => {
+      e.preventDefault();
+      const name = document.getElementById("reviewAuthorName")?.value || "Anonymous";
+      const org = document.getElementById("reviewAuthorOrg")?.value || "Valued Client";
+      const text = document.getElementById("reviewText")?.value || "";
+      const ratingNum = parseInt(ratingInput?.value || "5");
+
+      const initials = name.split(" ").map(w => w[0]).join("").toUpperCase().substring(0, 2) || "CL";
+      const starsHTML = "★".repeat(ratingNum);
+
+      if (testimonialsGrid) {
+        const newCardHTML = `
+          <div class="testimonial-card" style="animation: fadeInUpSmooth 0.6s ease;">
+            <div class="quote-icon">“</div>
+            <div style="color: var(--accent-color); margin-bottom: 0.6rem; font-size: 1.1rem;">${starsHTML}</div>
+            <p class="testimonial-content">${text}</p>
+            <div class="testimonial-author">
+              <div class="author-avatar-badge">${initials}</div>
+              <div class="author-info">
+                <h4>${name}</h4>
+                <span>${org}</span>
+              </div>
+            </div>
+          </div>
+        `;
+        testimonialsGrid.insertAdjacentHTML("afterbegin", newCardHTML);
+      }
+
+      if (statusContainer) {
+        statusContainer.innerHTML = `<div class="status-msg success" style="margin-bottom: 1rem;">Thank you! Your review has been submitted & published!</div>`;
+      }
+
+      setTimeout(() => {
+        reviewForm.reset();
+        if (statusContainer) statusContainer.innerHTML = "";
+        overlay.classList.remove("active");
+      }, 1500);
+    });
+  }
+}
+
 
 

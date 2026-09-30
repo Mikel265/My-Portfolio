@@ -2035,3 +2035,313 @@ footer a {
   border-color: var(--accent-color);
 }
 
+/* Software & Technical Skill Suite Matrix */
+.skills-matrix-section {
+  margin-top: 4rem;
+  padding: 3rem 2rem;
+  background-color: var(--bg-secondary);
+  border-radius: 16px;
+  border: 1px solid var(--border-color);
+}
+
+.skills-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 1.5rem;
+  margin-top: 2rem;
+}
+
+.skill-card {
+  background-color: var(--bg-primary);
+  padding: 1.5rem;
+  border-radius: 12px;
+  border: 1px solid var(--border-color);
+  box-shadow: var(--shadow-sm);
+  transition: transform var(--transition-fast), border-color var(--transition-fast);
+}
+
+.skill-card:hover {
+  transform: translateY(-4px);
+  border-color: var(--accent-color);
+}
+
+.skill-header {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  margin-bottom: 1rem;
+}
+
+.skill-icon-badge {
+  width: 44px;
+  height: 44px;
+  border-radius: 10px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 700;
+  font-size: 0.95rem;
+  color: #fff;
+  background: linear-gradient(135deg, var(--accent-color), var(--accent-hover));
+  box-shadow: 0 4px 12px rgba(197, 160, 89, 0.3);
+}
+
+.skill-icon-badge.ps { background: linear-gradient(135deg, #001e36, #31a8ff); }
+.skill-icon-badge.ai { background: linear-gradient(135deg, #330000, #ff9a00); }
+.skill-icon-badge.id { background: linear-gradient(135deg, #2b001a, #ff3366); }
+.skill-icon-badge.figma { background: linear-gradient(135deg, #1abcfe, #a259ff); }
+.skill-icon-badge.cd { background: linear-gradient(135deg, #1b4332, #2d6a4f); }
+.skill-icon-badge.canva { background: linear-gradient(135deg, #00c4cc, #7d2ae8); }
+
+.skill-title-wrapper h3 {
+  font-family: var(--font-serif);
+  font-size: 1.15rem;
+  margin-bottom: 0.15rem;
+}
+
+.skill-title-wrapper span {
+  font-size: 0.8rem;
+  color: var(--text-secondary);
+}
+
+.skill-level-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-size: 0.85rem;
+  font-weight: 600;
+  margin-bottom: 0.4rem;
+  color: var(--text-primary);
+}
+
+.skill-progress-bar {
+  width: 100%;
+  height: 7px;
+  background-color: var(--border-color);
+  border-radius: 10px;
+  overflow: hidden;
+  margin-bottom: 1rem;
+}
+
+.skill-progress-fill {
+  height: 100%;
+  background: linear-gradient(90deg, var(--accent-color), var(--accent-hover));
+  border-radius: 10px;
+  transition: width 1s ease-in-out;
+}
+
+.skill-tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.4rem;
+}
+
+.skill-tag-pill {
+  font-size: 0.75rem;
+  padding: 0.2rem 0.6rem;
+  border-radius: 12px;
+  background-color: var(--bg-secondary);
+  border: 1px solid var(--border-color);
+  color: var(--text-secondary);
+  font-weight: 500;
+}
+
+/* Miki Chatbot Quick Suggestion Chips */
+.miki-chips-container {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.4rem;
+  padding: 0.5rem 0.8rem;
+  background-color: var(--bg-secondary);
+  border-top: 1px solid var(--border-color);
+}
+
+.miki-chip {
+  font-size: 0.75rem;
+  font-weight: 500;
+  padding: 0.3rem 0.75rem;
+  border-radius: 20px;
+  background-color: var(--bg-primary);
+  border: 1px solid var(--border-color);
+  color: var(--text-primary);
+  cursor: pointer;
+  transition: all var(--transition-fast);
+}
+
+.miki-chip:hover {
+  background-color: var(--accent-color);
+  color: #121212;
+  border-color: var(--accent-color);
+  transform: translateY(-1px);
+}
+
+/* Portfolio Toolbar: View Switcher & Live Project Counter Badge */
+.portfolio-toolbar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-top: 1.5rem;
+  margin-bottom: 2rem;
+  flex-wrap: wrap;
+  gap: 1rem;
+}
+
+.project-counter-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-size: 0.9rem;
+  font-weight: 600;
+  color: var(--accent-color);
+  background-color: rgba(197, 160, 89, 0.12);
+  padding: 0.4rem 1rem;
+  border-radius: 20px;
+  border: 1px solid rgba(197, 160, 89, 0.3);
+}
+
+.view-switcher {
+  display: flex;
+  align-items: center;
+  gap: 0.3rem;
+  background-color: var(--bg-secondary);
+  padding: 0.3rem;
+  border-radius: 8px;
+  border: 1px solid var(--border-color);
+}
+
+.view-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  padding: 0.4rem 0.8rem;
+  font-size: 0.85rem;
+  font-weight: 500;
+  border-radius: 6px;
+  color: var(--text-secondary);
+  transition: all var(--transition-fast);
+}
+
+.view-btn.active, .view-btn:hover {
+  background-color: var(--bg-primary);
+  color: var(--accent-color);
+  box-shadow: var(--shadow-sm);
+}
+
+/* Portfolio List View Style */
+.portfolio-grid.list-view {
+  display: flex;
+  flex-direction: column;
+  gap: 1.25rem;
+}
+
+.portfolio-grid.list-view .project-card {
+  display: grid;
+  grid-template-columns: 200px 1fr;
+  align-items: center;
+  gap: 1.5rem;
+  height: auto;
+}
+
+@media (max-width: 640px) {
+  .portfolio-grid.list-view .project-card {
+    grid-template-columns: 1fr;
+  }
+}
+
+.portfolio-grid.list-view .card-image-wrapper {
+  height: 140px;
+  border-radius: 10px;
+}
+
+/* Review Modal & Avatar Badges */
+.author-avatar-badge {
+  width: 46px;
+  height: 46px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 700;
+  font-size: 1rem;
+  color: #fff;
+  background: linear-gradient(135deg, var(--accent-color), var(--accent-hover));
+  box-shadow: 0 4px 10px rgba(197, 160, 89, 0.3);
+  flex-shrink: 0;
+}
+
+.review-modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.75);
+  backdrop-filter: blur(8px);
+  z-index: 10000;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.3s ease;
+}
+
+.review-modal-overlay.active {
+  opacity: 1;
+  pointer-events: auto;
+}
+
+.review-modal {
+  background-color: var(--bg-primary);
+  border: 1px solid var(--border-color);
+  border-radius: 16px;
+  width: 90%;
+  max-width: 520px;
+  padding: 2rem;
+  position: relative;
+  box-shadow: var(--shadow-md);
+  transform: translateY(20px);
+  transition: transform 0.3s ease;
+}
+
+.review-modal-overlay.active .review-modal {
+  transform: translateY(0);
+}
+
+.star-rating-select {
+  display: flex;
+  gap: 0.5rem;
+  font-size: 1.5rem;
+  cursor: pointer;
+  color: var(--border-color);
+  margin-top: 0.3rem;
+}
+
+.star-rating-select .star {
+  transition: color 0.2s ease;
+}
+
+.star-rating-select .star.active {
+  color: var(--accent-color);
+}
+
+/* Package Handoff Banner on Contact Form */
+.selected-package-banner {
+  background-color: rgba(197, 160, 89, 0.12);
+  border: 1px dashed var(--accent-color);
+  padding: 0.9rem 1.2rem;
+  border-radius: 10px;
+  margin-bottom: 1.5rem;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  font-size: 0.9rem;
+  color: var(--text-primary);
+}
+
+.selected-package-banner span {
+  font-weight: 600;
+  color: var(--accent-color);
+}
+
+
