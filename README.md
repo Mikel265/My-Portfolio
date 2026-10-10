@@ -55,7 +55,7 @@ mikel-portfolio/
 | :--- | :--- | :--- |
 | **Startup Package** | KES 5,000+ | 2 Logo options, business card design, basic brand style sheet, 2 revisions |
 | **Small Business** *(Popular)* | KES 15,000+ | Full Brand Identity, custom logo, social media kit (5 templates), flyer/poster design, 4 revisions |
-| **Premium Package** | KES 45,000+ | Complete Brand & Digital Solution, custom website design, brand guidelines book, unlimited revisions |
+| **Premium Package** | KES 45,000+ | Complete Brand & Digital Solution, custom website design, brand guidelines book, 6 revisions |
 
 ---
 
