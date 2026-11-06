@@ -587,24 +587,31 @@ const PORTFOLIO_KNOWLEDGE = {
 
 // Initialize DOM
 document.addEventListener("DOMContentLoaded", () => {
+  initPersistentLayout();
+  initPageSpecificHandlers();
   initPageTransitions();
-  initAllPageHandlers();
+  initBackgroundPrefetch();
 });
 
-function initAllPageHandlers() {
+// Singleton Layout Components (Mounted once across entire session - Zero DOM Tearing)
+function initPersistentLayout() {
   initTheme();
   initNavbar();
+  initLightboxModal();
+  initFooterYear();
+  initMikiChatbot();
+}
+
+// Page-Specific Interactive Handlers (Re-run whenever #mainContent updates)
+function initPageSpecificHandlers() {
   renderPortfolioGrid("All", "");
   initCategoryFilters();
   initPortfolioSearch();
   initPortfolioViewSwitcher();
   initPackageSelectionHandoff();
   initReviewModal();
-  initLightboxModal();
   initContactForm();
   initFAQ();
-  initFooterYear();
-  initMikiChatbot();
   initMagneticTilt();
   initButtonInteractions();
   initScrollReveal();
@@ -632,12 +639,15 @@ function initURLParamsHandler() {
   if (foundProject) {
     setTimeout(() => {
       openLightbox(foundProject.id);
-    }, 200);
+    }, 150);
   }
 }
 
 // Theme Management
 function initTheme() {
+  if (window._themeInitialized) return;
+  window._themeInitialized = true;
+
   const themeToggleBtn = document.getElementById("themeToggle");
   const savedTheme = localStorage.getItem("theme") || "light";
   document.documentElement.setAttribute("data-theme", savedTheme);
@@ -674,35 +684,46 @@ function initNavbar() {
   const mobileToggle = document.getElementById("mobileToggle");
   const navMenu = document.getElementById("navMenu");
 
-  // Highlight active link based on current filename
-  const currentPage = window.location.pathname.split("/").pop() || "index.html";
-  document.querySelectorAll(".nav-link").forEach(link => {
-    const href = link.getAttribute("href");
-    if (href === currentPage || (currentPage === "" && href === "index.html")) {
-      link.classList.add("active");
-    } else if (href !== currentPage) {
-      link.classList.remove("active");
-    }
-  });
+  // Sticky Navbar Scroll Listener (passive, bound once)
+  if (!window._navbarScrollBound) {
+    window._navbarScrollBound = true;
+    window.addEventListener("scroll", () => {
+      if (window.scrollY > 20) {
+        navbar?.classList.add("scrolled");
+      } else {
+        navbar?.classList.remove("scrolled");
+      }
+    }, { passive: true });
+  }
 
-  if (mobileToggle && navMenu) {
+  updateActiveNavLink();
+
+  if (mobileToggle && navMenu && !window._mobileToggleBound) {
+    window._mobileToggleBound = true;
     mobileToggle.addEventListener("click", () => {
       navMenu.classList.toggle("active");
     });
-
-    document.querySelectorAll(".nav-link").forEach(link => {
-      link.addEventListener("click", () => {
-        navMenu.classList.remove("active");
-      });
-    });
   }
+}
+
+function updateActiveNavLink(targetUrl) {
+  const normalizedTarget = normalizePath(targetUrl || window.location.pathname);
+  document.querySelectorAll(".nav-link").forEach(link => {
+    const href = link.getAttribute("href") || "";
+    const normalizedHref = normalizePath(href);
+    if (normalizedHref === normalizedTarget) {
+      link.classList.add("active");
+    } else {
+      link.classList.remove("active");
+    }
+  });
 }
 
 function createProjectCardHTML(project) {
   return `
     <div class="project-card" data-id="${project.id}">
       <div class="card-image-wrapper">
-        <img src="${project.image}" alt="${project.title}" class="card-image" loading="lazy" />
+        <img src="${project.image}" alt="${project.title}" class="card-image" loading="lazy" decoding="async" />
         <div class="card-overlay">
           <span class="view-case-study">View Case Study <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="vertical-align: middle; margin-left: 4px;"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg></span>
         </div>
@@ -814,6 +835,8 @@ function initPortfolioSearch() {
 
 // Lightbox Case Study Modal
 function initLightboxModal() {
+  if (window._lightboxInitialized) return;
+  window._lightboxInitialized = true;
   if (document.getElementById("lightboxModal")) return;
 
   const modalHTML = `
@@ -1050,6 +1073,9 @@ function initFooterYear() {
 
 // Miki AI Chatbot Assistant Widget
 function initMikiChatbot() {
+  if (window._mikiInitialized) return;
+  window._mikiInitialized = true;
+
   const mikiToggle = document.getElementById("mikiToggle");
   const mikiWindow = document.getElementById("mikiWindow");
   const mikiClose = document.getElementById("mikiClose");
@@ -1541,24 +1567,231 @@ function getMikiAIResponse(query) {
   return getSingleIntentResponse(query);
 }
 
-// Instant SPA Page Router (Zero White Flash Navigation)
+// ==========================================
+// Ultra-Fast Next.js-Style SPA Router Engine
+// Zero-Delay Transitions, In-Memory Caching & Prefetching
+// ==========================================
+
+const pageCache = new Map();
+let isNavigating = false;
+
+// Canonical path normalizer (handles '/', '.html', pretty URLs, query params, hashes)
+function normalizePath(urlPath) {
+  if (!urlPath) return "index.html";
+  let clean = urlPath.split("?")[0].split("#")[0].trim();
+  clean = clean.split("/").pop() || "index.html";
+  if (clean === "" || clean === "/") clean = "index.html";
+  if (!clean.includes(".")) clean += ".html";
+  return clean.toLowerCase();
+}
+
+// Progress Bar Controller (Next.js / YouTube Style)
+function showProgressBar() {
+  let bar = document.getElementById("navProgressBar");
+  if (!bar) {
+    bar = document.createElement("div");
+    bar.id = "navProgressBar";
+    bar.className = "nav-progress-bar";
+    document.body.appendChild(bar);
+  }
+  bar.style.width = "0%";
+  bar.style.opacity = "1";
+  requestAnimationFrame(() => {
+    bar.style.width = "70%";
+  });
+}
+
+function hideProgressBar() {
+  const bar = document.getElementById("navProgressBar");
+  if (!bar) return;
+  bar.style.width = "100%";
+  setTimeout(() => {
+    bar.style.opacity = "0";
+    setTimeout(() => {
+      bar.style.width = "0%";
+    }, 200);
+  }, 150);
+}
+
+// Prefetch a route into in-memory pageCache
+async function prefetchRoute(href) {
+  if (!href) return;
+  const cleanHref = href.split("#")[0];
+  if (!cleanHref) return;
+
+  const normalized = normalizePath(cleanHref);
+  if (pageCache.has(normalized)) return;
+
+  try {
+    const res = await fetch(cleanHref, { cache: "default" });
+    if (!res.ok) return;
+    const htmlText = await res.text();
+    const parser = new DOMParser();
+    const doc = parser.parseFromString(htmlText, "text/html");
+
+    const mainEl = doc.getElementById("mainContent") || doc.querySelector("main") || doc.body;
+    const title = doc.querySelector("title")?.innerText || document.title;
+
+    if (mainEl) {
+      pageCache.set(normalized, {
+        mainHTML: mainEl.innerHTML,
+        title: title
+      });
+    }
+  } catch (err) {
+    // Ignore prefetch network errors silently
+  }
+}
+
+// Background prefetch all core routes during browser idle time
+function initBackgroundPrefetch() {
+  const coreRoutes = [
+    "index.html",
+    "about.html",
+    "portfolio.html",
+    "services.html",
+    "testimonials.html",
+    "contact.html"
+  ];
+
+  const prefetchAll = () => {
+    const normalizedCurrent = normalizePath(window.location.pathname);
+    coreRoutes.forEach(route => {
+      if (normalizePath(route) !== normalizedCurrent) {
+        prefetchRoute(route);
+      }
+    });
+  };
+
+  if ("requestIdleCallback" in window) {
+    window.requestIdleCallback(prefetchAll, { timeout: 2500 });
+  } else {
+    setTimeout(prefetchAll, 300);
+  }
+}
+
+// Seamless Navigation to Destination Route
+async function navigateTo(url, push = true) {
+  if (isNavigating) return;
+
+  const urlObj = new URL(url, window.location.href);
+  const targetClean = urlObj.pathname.split("/").pop() || "index.html";
+  const normalizedTarget = normalizePath(targetClean);
+  const normalizedCurrent = normalizePath(window.location.pathname);
+
+  // If identical route and no search or hash difference, ignore
+  if (
+    normalizedTarget === normalizedCurrent &&
+    urlObj.search === window.location.search &&
+    !urlObj.hash
+  ) {
+    return;
+  }
+
+  // Same page in-page anchor scroll
+  if (normalizedTarget === normalizedCurrent && urlObj.hash) {
+    const el = document.querySelector(urlObj.hash);
+    if (el) {
+      el.scrollIntoView({ behavior: "smooth" });
+      if (push) window.history.pushState({}, "", url);
+      return;
+    }
+  }
+
+  isNavigating = true;
+  updateActiveNavLink(url);
+
+  // Immediately dismiss mobile navigation menu if open
+  const navMenu = document.getElementById("navMenu");
+  if (navMenu?.classList.contains("active")) {
+    navMenu.classList.remove("active");
+  }
+
+  let cached = pageCache.get(normalizedTarget);
+  if (!cached) {
+    showProgressBar();
+    try {
+      const res = await fetch(urlObj.pathname, { cache: "default" });
+      if (!res.ok) {
+        window.location.href = url;
+        return;
+      }
+      const htmlText = await res.text();
+      const parser = new DOMParser();
+      const doc = parser.parseFromString(htmlText, "text/html");
+      const mainEl = doc.getElementById("mainContent") || doc.querySelector("main") || doc.body;
+      const title = doc.querySelector("title")?.innerText || document.title;
+      cached = {
+        mainHTML: mainEl.innerHTML,
+        title: title
+      };
+      pageCache.set(normalizedTarget, cached);
+    } catch (err) {
+      window.location.href = url;
+      return;
+    } finally {
+      hideProgressBar();
+    }
+  }
+
+  const currentMain = document.getElementById("mainContent") || document.querySelector("main");
+  if (currentMain && cached) {
+    // Ultra-fast 40ms micro-fade for instantaneous feedback
+    currentMain.style.transition = "opacity 0.05s ease";
+    currentMain.style.opacity = "0.75";
+
+    setTimeout(() => {
+      currentMain.innerHTML = cached.mainHTML;
+      document.title = cached.title;
+
+      if (push) {
+        window.history.pushState({}, "", url);
+      }
+
+      window.scrollTo({ top: 0, behavior: "instant" });
+      currentMain.style.opacity = "1";
+
+      initPageSpecificHandlers();
+      isNavigating = false;
+    }, 40);
+  } else {
+    window.location.href = url;
+  }
+}
+
+// Router Event Listeners
 function initPageTransitions() {
   document.body.classList.add("page-loaded");
 
-  document.addEventListener("click", async (e) => {
+  // Cache initial page into in-memory cache
+  const initialMain = document.getElementById("mainContent") || document.querySelector("main");
+  if (initialMain) {
+    const currentNormalized = normalizePath(window.location.pathname);
+    pageCache.set(currentNormalized, {
+      mainHTML: initialMain.innerHTML,
+      title: document.title
+    });
+  }
+
+  // Intercept all internal navigation clicks
+  document.addEventListener("click", (e) => {
     const link = e.target.closest("a");
     if (!link) return;
 
     const href = link.getAttribute("href");
     if (!href) return;
 
+    // Filter out external, download, special protocols, and modifier clicks
     if (
       href.startsWith("#") ||
       href.startsWith("mailto:") ||
       href.startsWith("tel:") ||
+      href.startsWith("https://wa.me") ||
       href.endsWith(".pdf") ||
       link.target === "_blank" ||
-      e.ctrlKey || e.metaKey || e.shiftKey || e.altKey
+      link.hasAttribute("download") ||
+      e.ctrlKey || e.metaKey || e.shiftKey || e.altKey ||
+      e.button !== 0
     ) {
       return;
     }
@@ -1567,47 +1800,39 @@ function initPageTransitions() {
     const isSameHost = href.includes(window.location.hostname);
 
     if (isRelative || isSameHost) {
-      const currentPath = window.location.pathname.split("/").pop() || "index.html";
-      const targetPath = href.split("#")[0].split("/").pop() || "index.html";
-
-      if (currentPath === targetPath && !href.includes("#")) {
-        return;
-      }
-
       e.preventDefault();
-
-      try {
-        const response = await fetch(href);
-        if (!response.ok) {
-          window.location.href = href;
-          return;
-        }
-
-        const htmlText = await response.text();
-        const parser = new DOMParser();
-        const doc = parser.parseFromString(htmlText, "text/html");
-
-        const newBody = doc.querySelector("body");
-        const newTitle = doc.querySelector("title");
-
-        if (newBody) {
-          document.body.innerHTML = newBody.innerHTML;
-          if (newTitle) document.title = newTitle.innerText;
-          window.history.pushState({}, "", href);
-          window.scrollTo({ top: 0, behavior: "instant" });
-
-          initAllPageHandlers();
-        } else {
-          window.location.href = href;
-        }
-      } catch (err) {
-        window.location.href = href;
-      }
+      navigateTo(href, true);
     }
   });
 
+  // Next.js-style Instant Hover and Touch Prefetching
+  document.addEventListener("mouseover", (e) => {
+    const link = e.target.closest("a");
+    if (!link) return;
+    const href = link.getAttribute("href");
+    if (!href || href.startsWith("#") || href.startsWith("mailto:") || href.startsWith("tel:") || href.endsWith(".pdf") || link.target === "_blank") return;
+    const isRelative = !href.includes("://") && !href.startsWith("//");
+    const isSameHost = href.includes(window.location.hostname);
+    if (isRelative || isSameHost) {
+      prefetchRoute(href);
+    }
+  }, { passive: true });
+
+  document.addEventListener("touchstart", (e) => {
+    const link = e.target.closest("a");
+    if (!link) return;
+    const href = link.getAttribute("href");
+    if (!href || href.startsWith("#") || href.startsWith("mailto:") || href.startsWith("tel:") || href.endsWith(".pdf") || link.target === "_blank") return;
+    const isRelative = !href.includes("://") && !href.startsWith("//");
+    const isSameHost = href.includes(window.location.hostname);
+    if (isRelative || isSameHost) {
+      prefetchRoute(href);
+    }
+  }, { passive: true });
+
+  // Popstate history navigation (instant Back / Forward from cache without page reload)
   window.addEventListener("popstate", () => {
-    window.location.reload();
+    navigateTo(window.location.href, false);
   });
 }
 

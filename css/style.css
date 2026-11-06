@@ -1,4 +1,4 @@
-@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Playfair+Display:ital,wght@0,500;0,600;0,700;1,500&display=swap');
+/* Google Fonts are preconnected and loaded via <link> in HTML for zero-blocking performance */
 
 :root {
   --bg-primary: #ffffff;
@@ -106,6 +106,29 @@ img {
     opacity: 1;
     transform: translateY(0);
   }
+}
+
+/* Top Nano Progress Bar for Instant Route Navigation */
+.nav-progress-bar {
+  position: fixed;
+  top: 0;
+  left: 0;
+  height: 3px;
+  width: 0%;
+  background: linear-gradient(90deg, var(--accent-color, #C5A059), var(--accent-hover, #D4AF37));
+  box-shadow: 0 0 10px rgba(197, 160, 89, 0.7);
+  z-index: 999999;
+  transition: width 0.2s cubic-bezier(0.16, 1, 0.3, 1), opacity 0.2s ease;
+  pointer-events: none;
+}
+
+/* Fast hardware-accelerated page transitions without layout shift */
+#mainContent {
+  display: block;
+  min-height: calc(100vh - 160px);
+  transition: opacity 0.08s ease-out;
+  will-change: opacity;
+  transform: translateZ(0);
 }
 
 /* Header & Navigation */

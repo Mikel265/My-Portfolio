@@ -1,0 +1,24 @@
+/*
+  X-Frame-Options: SAMEORIGIN
+  X-Content-Type-Options: nosniff
+  Referrer-Policy: strict-origin-when-cross-origin
+
+# Static image assets - 1 year immutable CDN cache
+/images/*
+  Cache-Control: public, max-age=31536000, immutable
+
+# Downloadable assets and PDFs - 1 year immutable CDN cache
+/assets/*
+  Cache-Control: public, max-age=31536000, immutable
+
+# Favicon
+/favicon.svg
+  Cache-Control: public, max-age=2592000, stale-while-revalidate=86400
+
+# CSS and JavaScript - 7 days with stale-while-revalidate
+/css/*
+  Cache-Control: public, max-age=604800, stale-while-revalidate=86400
+
+/js/*
+  Cache-Control: public, max-age=604800, stale-while-revalidate=86400
+
