@@ -82,23 +82,6 @@ To run and preview the site locally:
 
 ---
 
-## 🌐 Netlify Deployment Instructions
-
-1. Push this repository to your GitHub account:
-   ```bash
-   git init
-   git add .
-   git commit -m "Deploy Mikel Graphicals Portfolio"
-   git branch -M main
-   git remote add origin https://github.com/Mikel265/mikel-portfolio.git
-   git push -u origin main
-   ```
-2. Log into [app.netlify.com](https://app.netlify.com).
-3. Click **"Add new site"** $\rightarrow$ **"Import an existing project"** $\rightarrow$ select **GitHub**.
-4. Choose `mikel-portfolio` repository and click **Deploy Site**.
-
----
-
 ## 📞 Connect & Contact
 
 - **WhatsApp / Phone:** [+254 795 168 357](https://wa.me/254795168357)
