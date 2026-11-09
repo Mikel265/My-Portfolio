@@ -631,9 +631,9 @@ function initURLParamsHandler() {
   const foundProject = PROJECTS.find(p => {
     const slug = p.title.toLowerCase().replace(/[^a-z0-9]+/g, "-");
     const clientSlug = p.client.toLowerCase().replace(/[^a-z0-9]+/g, "-");
-    return p.id.toString() === projectQuery || 
-           slug.includes(projectQuery.toLowerCase()) || 
-           clientSlug.includes(projectQuery.toLowerCase());
+    return p.id.toString() === projectQuery ||
+      slug.includes(projectQuery.toLowerCase()) ||
+      clientSlug.includes(projectQuery.toLowerCase());
   });
 
   if (foundProject) {
@@ -1020,7 +1020,7 @@ function initContactForm() {
       if (!statusContainer) return;
 
       statusContainer.innerHTML = `<div class="status-msg sending">Sending message...</div>`;
-      
+
       const formData = {
         name: document.getElementById("name")?.value,
         email: document.getElementById("email")?.value,
@@ -1036,16 +1036,16 @@ function initContactForm() {
         },
         body: JSON.stringify(formData)
       })
-      .then(response => response.json())
-      .then(data => {
-        statusContainer.innerHTML = `<div class="status-msg success">Thank you! Your message has been sent successfully. Mikel will get back to you shortly.</div>`;
-        form.reset();
-      })
-      .catch(error => {
-        console.error("Contact Form Error:", error);
-        statusContainer.innerHTML = `<div class="status-msg success">Thank you! Your message has been received. Mikel will get back to you shortly.</div>`;
-        form.reset();
-      });
+        .then(response => response.json())
+        .then(data => {
+          statusContainer.innerHTML = `<div class="status-msg success">Thank you! Your message has been sent successfully. Mikel will get back to you shortly.</div>`;
+          form.reset();
+        })
+        .catch(error => {
+          console.error("Contact Form Error:", error);
+          statusContainer.innerHTML = `<div class="status-msg success">Thank you! Your message has been received. Mikel will get back to you shortly.</div>`;
+          form.reset();
+        });
     });
   }
 }
@@ -1089,10 +1089,10 @@ function initMikiChatbot() {
   if (!mikiWindow.querySelector(".miki-chips-container")) {
     const chipsHTML = `
       <div class="miki-chips-container">
-        <span class="miki-chip" data-query="What packages do you offer?">💰 See Packages</span>
-        <span class="miki-chip" data-query="Show me your best design projects">🖼️ View Best Work</span>
-        <span class="miki-chip" data-query="What is your WhatsApp number?">📲 Instant WhatsApp</span>
-        <span class="miki-chip" data-query="What is your average turnaround time?">⏱️ Turnaround Time</span>
+        <span class="miki-chip" data-query="What packages do you offer?"> See Packages</span>
+        <span class="miki-chip" data-query="Show me your best design projects"> View Best Work</span>
+        <span class="miki-chip" data-query="What is your WhatsApp number?"> Instant WhatsApp</span>
+        <span class="miki-chip" data-query="What is your average turnaround time?"> Turnaround Time</span>
       </div>
     `;
     const inputArea = mikiWindow.querySelector(".miki-input-area");
@@ -1331,10 +1331,10 @@ function getSingleIntentResponse(rawQuery) {
   const matchingProjects = PORTFOLIO_KNOWLEDGE.projects.filter(p => {
     const titleLower = p.title.toLowerCase().replace(/[^\w\s]/g, "");
     const clientLower = p.details.client.toLowerCase();
-    
+
     // Direct title or clean query substring match
     if (qClean.includes(titleLower) || titleLower.includes(qClean)) return true;
-    
+
     // Client name match (for specific clients)
     if (clientLower !== "personal project" && clientLower !== "sme client" && clientLower !== "corporate client" && clientLower !== "community church" && clientLower !== "political candidate" && (qClean.includes(clientLower) || qClean.includes("otunge"))) {
       return true;
@@ -1546,7 +1546,7 @@ function getMikiAIResponse(query) {
 
     rawParts.forEach((part, index) => {
       const resp = getSingleIntentResponse(part);
-      
+
       // Detect if part was off-topic redirection
       if (resp === "I'm focused on helping you explore Mikel Graphicals and Mikel's portfolio. Ask me about the projects, services, skills, process, pricing, or contact information.") {
         hasOffTopic = true;
@@ -1846,7 +1846,7 @@ function initScrollReveal() {
 // Smooth Anchor Scrolling
 function initSmoothScroll() {
   document.querySelectorAll('a[href^="#"]').forEach(anchor => {
-    anchor.addEventListener("click", function(e) {
+    anchor.addEventListener("click", function (e) {
       const targetId = this.getAttribute("href");
       if (targetId === "#") return;
       const targetElement = document.querySelector(targetId);
@@ -2021,7 +2021,7 @@ function initPackageSelectionHandoff() {
 
   if (selectedPackage && subjectInput) {
     subjectInput.value = `Inquiry: ${selectedPackage}`;
-    
+
     if (contactForm && !document.querySelector(".selected-package-banner")) {
       const bannerHTML = `
         <div class="selected-package-banner">
@@ -2031,7 +2031,7 @@ function initPackageSelectionHandoff() {
       `;
       contactForm.insertAdjacentHTML("beforebegin", bannerHTML);
     }
-    
+
     subjectInput.focus();
   }
 }
