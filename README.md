@@ -1,4 +1,4 @@
- Mikel Graphicals | Graphic Designer & Visual Strategist Portfolio
+** **Mikel Graphicals | Graphic Designer & Visual Strategist Portfolio**
 
 Welcome to the official web portfolio repository for Mikel Graphicals — Graphic Designer & Visual Strategist based in Nakuru, Kenya.
 
