@@ -1,4 +1,4 @@
-** **Mikel Graphicals | Graphic Designer & Visual Strategist Portfolio**
+Mikel Graphicals | Graphic Designer & Visual Strategist Portfolio
 
 Welcome to the official web portfolio repository for Mikel Graphicals — Graphic Designer & Visual Strategist based in Nakuru, Kenya.
 
@@ -13,7 +13,7 @@ This website showcases visual branding identities, event posters, marketing coll
 -  Case Study Lightbox Modal: High-resolution project popups detailing challenge, design solution, client name, software tools used, and original resolution image links.
 -  4-Step Design Process ("How I Work"): Structured workflow highlighting Discovery, Concept, Refinement, and Handover.
 -  Interactive FAQ Accordion: Animated collapsible drawers answering file format, revision, turnaround time, and deposit inquiries.
--  **AJAX Contact Form Integration: Direct email submission connected via FormSubmit API to `mikelndungu263@gmail.com` with real-time status alerts.
+-  AJAX Contact Form Integration: Direct email submission connected via FormSubmit API to `mikelndungu263@gmail.com` with real-time status alerts.
 -  Open Graph & Twitter Social Sharing: Embedded `og:` and `twitter:` preview cards for rich sharing on WhatsApp, LinkedIn, X, and Facebook.
 -  Miki AI Virtual Assistant: Floating interactive chatbot answering portfolio, pricing, and service inquiries.
 -  100% Fully Responsive: Optimized across desktop, tablet, and mobile devices.
